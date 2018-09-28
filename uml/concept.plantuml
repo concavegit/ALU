@@ -1,0 +1,55 @@
+@startuml
+
+partition Preprocessor {
+if (inputs) then (A)
+if (100 or 111) then
+:~A;
+else
+:A;
+endif
+else (B)
+if (001 or 100 or 111) then
+:~B;
+else
+:B;
+endif
+
+if (001) then
+:~B + 1;
+else
+:~B;
+endif
+endif
+}
+
+partition Midprocessor {
+if (00X or 011) then
+:ADD;
+else if (010) then
+:XOR;
+else if (1X1) then
+:NAND;
+else if (100 or 110) then
+:NOR;
+endif
+}
+
+note
+The intermediate result, carryout, and overflow is created here
+end note
+
+partition PostProcessor {
+if (100 or 111) then
+:~out;
+else if (b011) then
+:slt;
+endif
+}
+
+note
+The result, carryout, and new overflow is created here
+end note
+
+:result, carryout, zero;
+
+@enduml
