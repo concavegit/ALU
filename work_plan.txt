@@ -1,0 +1,4 @@
+- 2018-09-28: Work plan complete, Testbench complete
+- 2018-09-29: Components of ALU complete (no logical glue yet), Testbench complete
+- 2018-09-30: All verilog complete, timing delays analyzed
+- 2018-10-2: All writing complete
