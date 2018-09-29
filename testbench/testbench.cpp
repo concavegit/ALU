@@ -4,9 +4,6 @@
 
 #include <Valu.h>
 
-auto main_time = 0;
-double sc_time_stamp() {return main_time;}
-
 void checkZero(Valu& top, std::string desc)
 {
   if ((bool) top.result == top.zero)
@@ -14,7 +11,7 @@ void checkZero(Valu& top, std::string desc)
            top.result, top.operandA, desc.c_str(), top.operandB, (bool) top.result);
 }
 
-void noCarryOverflow(Valu& top, std::string desc)
+void flagsZero(Valu& top, std::string desc)
 {
   if (top.carryout != 0)
     printf("carryout is %d for %d %s %d, should be 0",
@@ -80,7 +77,7 @@ void checkXor(Valu& top)
     printf("Xor is %d for %d ^ %d, should be %d\n",
            top.result, top.operandA, top.operandB, compare);
 
-  noCarryOverflow(top, "^");
+  flagsZero(top, "^");
 }
 
 void checkSLT(Valu& top)
@@ -90,16 +87,14 @@ void checkSLT(Valu& top)
     printf("slt is %d for %d < %d, should be %d\n",
            top.result, top.operandA, top.operandB, slt);
 
-  noCarryOverflow(top, "<");
+  flagsZero(top, "<");
 }
 
 int main(int argc, char** argv)
 {
   Verilated::commandArgs(argc, argv);
-  Verilated::traceEverOn(true);
 
   Valu top;
-  VerilatedVcdC tfp;
 
   std::vector<int> failed_cases;
 
@@ -129,5 +124,4 @@ int main(int argc, char** argv)
     }
 
   top.final();
-  tfp.close();
 }
