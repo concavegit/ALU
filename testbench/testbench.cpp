@@ -8,7 +8,8 @@ void checkZero(Valu& top, std::string desc)
 {
   if ((bool) top.result == top.zero)
     printf("zero is %d for %d %s %d, should be %d",
-           top.result, top.operandA, desc.c_str(), top.operandB, (bool) top.result);
+           top.result, top.operandA, desc.c_str(), top.operandB,
+           (bool) top.result);
 }
 
 void flagsZero(Valu& top, std::string desc)
@@ -22,6 +23,15 @@ void flagsZero(Valu& top, std::string desc)
            top.overflow, top.operandA, desc.c_str(), top.operandB);
 
   checkZero(top, desc);
+}
+
+void checkBitwise(Valu& top, std::string desc, IData result)
+{
+  if (top.result != result)
+    printf("Xor is %d for %d %s %d, should be %d\n",
+           top.result, top.operandA, desc.c_str(), top.operandB, result);
+
+  flagsZero(top, "^");
 }
 
 void checkSum(Valu& top)
@@ -70,25 +80,21 @@ void checkDiff(Valu& top)
            top.overflow, top.operandA, top.operandB, overflow);
 }
 
-void checkXor(Valu& top)
-{
-  const auto compare = (top.operandA ^ top.operandB);
-  if (top.result != compare)
-    printf("Xor is %d for %d ^ %d, should be %d\n",
-           top.result, top.operandA, top.operandB, compare);
+void checkXor(Valu& top) {checkBitwise(top, "^", top.operandA ^ top.operandB);}
+void checkSLT(Valu& top) {checkBitwise(top, "<", top.operandA < top.operandB);}
+void checkAnd(Valu& top) {checkBitwise(top, "&", top.operandA & top.operandB);}
 
-  flagsZero(top, "^");
+void checkNand(Valu& top)
+{
+  checkBitwise(top, "NAND", ~(top.operandA & top.operandB));
 }
 
-void checkSLT(Valu& top)
+void checkNor(Valu& top)
 {
-  const auto slt = top.operandA < top.operandB;
-  if (top.result != slt)
-    printf("slt is %d for %d < %d, should be %d\n",
-           top.result, top.operandA, top.operandB, slt);
-
-  flagsZero(top, "<");
+  checkBitwise(top, "NOR", ~(top.operandA | top.operandB));
 }
+
+void checkOr(Valu& top) {checkBitwise(top, "|", top.operandA | top.operandB);}
 
 int main(int argc, char** argv)
 {
@@ -107,7 +113,11 @@ int main(int argc, char** argv)
      1, 0, 3, 2
     };
 
-  int c;
+  const std::vector<void (*) (Valu &)> commands =
+    {
+     checkSum, checkDiff, checkXor, checkSLT,
+     checkAnd, checkNand, checkNor, checkOr
+    };
 
   for (auto i = 0; i < 4; i++)
     {
@@ -116,11 +126,8 @@ int main(int argc, char** argv)
       top.command = test_cases[2][i];
       top.eval();
 
-      if (top.command == 0) checkSum(top);
-      if (top.command == 1) checkDiff(top);
-      if (top.command == 2) checkXor(top);
-      if (top.command == 3) checkSLT(top);
       printf("%d\n\n", i);
+      commands[i](top);
     }
 
   top.final();
