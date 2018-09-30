@@ -64,25 +64,27 @@ void checkBitwise(Valu& dut, std::string func, std::string desc, IData result)
  */
 void checkSum(Valu& dut)
 {
-  const int sum = dut.operandA + dut.operandB;
-  const bool carry = bool ((long) dut.operandA + (long) dut.operandB >> 32 & 1);
+  const int operandA = dut.operandA;
+  const int operandB = dut.operandB;
+  const int sum = operandA + operandB;
+  const bool carry = bool ((long) operandA + (long) operandB >> 32 & 1);
   const bool zero = sum == 0;
-  const bool overflow = (dut.operandA >= 0 && dut.operandB >= 0)
-    ? sum < 0 : (dut.operandA < 0 && dut.operandB < 0 ? sum >= 0 : 0);
+  const bool overflow = operandA >= 0 && operandB >= 0
+    ? sum < 0 : (operandA < 0 && operandB < 0 ? sum >= 0 : 0);
 
   if (dut.result != sum)
     printf("Sum is %d for %d + %d, should be %d\n",
-           dut.result, dut.operandA, dut.operandB, sum);
+           dut.result, operandA, operandB, sum);
 
   if (dut.carryout != carry)
     printf("carryout is %d for %d + %d, should be %d\n",
-           dut.carryout, dut.operandA, dut.operandB, carry);
+           dut.carryout, operandA, operandB, carry);
 
   checkZero(dut, "+");
 
   if (dut.overflow != overflow)
     printf("Overflow is %d for %d + %d, should be %d\n",
-           dut.overflow, dut.operandA, dut.operandB, overflow);
+           dut.overflow, operandA, operandB, overflow);
 }
 
 /**
@@ -92,28 +94,27 @@ void checkSum(Valu& dut)
  */
 void checkDiff(Valu& dut)
 {
-  const int diff = dut.operandA - dut.operandB;
-  const bool carry = bool ((long) dut.operandA + (long) dut.operandB >> 32 & 1);
+  const int operandA = dut.operandA;
+  const int operandB = dut.operandB;
+  const int diff = operandA - operandB;
+  const bool carry = bool ((long) operandA + (long) operandB >> 32 & 1);
   const bool zero = diff == 0;
-  const bool overflow = ((int) dut.operandA >= 0 && (int) dut.operandB < 0)
-    ? diff < 0 : dut.operandA < 0 && dut.operandB >= 0 ? diff >= 0 : 0;
+  const bool overflow = operandA >= 0 && operandB < 0
+    ? diff < 0 : operandA < 0 && operandB >= 0 ? diff >= 0 : 0;
 
   if (dut.result != diff)
     printf("Difference is %d for %d - %d, should be %d\n",
-           dut.result, dut.operandA, dut.operandB, diff);
+           dut.result, operandA, operandB, diff);
 
   if (dut.carryout != carry)
     printf("carryout is %d for %d - %d, should be %d\n",
-           dut.carryout, dut.operandA, dut.operandB, carry);
+           dut.carryout, operandA, operandB, carry);
 
   checkZero(dut, "-");
 
   if (dut.overflow != overflow)
-    printf("overflow is %d for %d - %d, should be %d\n",
-           dut.overflow, dut.operandA, dut.operandB, overflow);
-  printf("%d\n\n", (int) dut.operandB < 0);
-  printf("%d\n\n", diff < 0);
-  printf("%d\n\n", dut.overflow);
+    printf("Overflow is %d for %d - %d, should be %d\n",
+           dut.overflow, operandA, operandB, overflow);
 }
 
 // Warn for each biwise function and SLT.
