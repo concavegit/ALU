@@ -1,6 +1,7 @@
 #include <verilated.h>
 #include <verilated_vcd_c.h>
 #include <limits>
+#include <random>
 
 #include <Valu.h>
 
@@ -94,6 +95,45 @@ void checkNor(Valu& top)
   checkBitwise(top, "NOR", ~(top.operandA | top.operandB));
 }
 
+std::tuple<int, int> genTestCase(bool a_nonneg, bool b_nonneg, bool sum_nonneg)
+{
+  std::random_device rd;
+  std::mt19937 rng(rd());
+
+  const auto a = a_nonneg ? rand() : - (rand() + (b_nonneg || sum_nonneg));
+
+  std::tuple<int, int> b_range;
+
+  if (a_nonneg == b_nonneg)
+    {
+      if (sum_nonneg == a_nonneg)
+        {
+          if (a_nonneg) b_range = {0, std::numeric_limits<int>::max() - a};
+          else b_range = {std::numeric_limits<int>::min() - a, -1};
+        } else
+        {
+          if (a_nonneg) b_range = {std::numeric_limits<int>::max() - a + 1, std::numeric_limits<int>::max()};
+          else b_range = {std::numeric_limits<int>::min() - a - 1, std::numeric_limits<int>::min()};
+        }
+    } else
+    {
+      if (a_nonneg)
+        {
+          if (sum_nonneg) b_range = {-a, -1};
+          else b_range = {std::numeric_limits<int>::min(), -a - 1};
+        }
+      else
+        {
+          if (sum_nonneg) b_range = {-a, std::numeric_limits<int>::max()};
+          else b_range = {-a - 1, std::numeric_limits<int>::min() - a};
+        }
+    }
+
+  std::uniform_int_distribution<int> uni(std::get<0>(b_range), std::get<1>(b_range));
+
+  return {a, uni(rng)};
+}
+
 void checkOr(Valu& top) {checkBitwise(top, "|", top.operandA | top.operandB);}
 
 int main(int argc, char** argv)
@@ -121,8 +161,9 @@ int main(int argc, char** argv)
 
   for (auto i = 0; i < 4; i++)
     {
-      top.operandA = test_cases[0][i];
-      top.operandB = test_cases[1][i];
+      const auto tc = genTestCase(true, false, true);
+      top.operandA = std::get<0>(tc);
+      top.operandB = std::get<1>(tc);
       top.command = test_cases[2][i];
       top.eval();
 
