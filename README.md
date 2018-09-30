@@ -1,4 +1,5 @@
 # ALU
+The main report is in [report.md](report.md).
 
 ## Structure
 The structure is a reprocess for the arguments, a midprocessor to combine the transformed arguments, and a postprocessor to transform the outputs.
