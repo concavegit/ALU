@@ -9,12 +9,13 @@ The least significant ALU bit slice sets the adder's carry bit to whether or not
 
 ![](uml/concept.png)
 
-The middle ALU slices then take the raw carry from the previous ALU:
+The middle ALU slices then take the raw carry from the previous ALU, as well as applying and between the last zero output and the current result to output a new OR, to be inverted after the last bit.
 
 ![](uml/alu1.png)
 
 The last ALU is identical to the above, except the carry in and carry out are compared to create an additional overflow output.
-A postprocessor is then ran on the outputs and the raw inputs to deduce SLT and zero, as well as setting carry and overflow to zero when addition or subtraction is not used.
+The zero flag is also inverted so that 1 indicates zero and 0 indicates a nonzero output.
+A postprocessor is then ran on the outputs and the raw inputs to deduce SLT, as well as setting carry and overflow to zero when addition or subtraction is not used.
 
 # Test Bench
 
