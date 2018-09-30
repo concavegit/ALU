@@ -1,17 +1,17 @@
 @startuml
-[A_0]
-[B_0]
+[A_i]
+[B_i]
+[Carry_i]
 
 package "Inverting Stage" {
-        [A_0] --> [AND || OR ? Invert]
-        [B_0] --> [AND || OR || SUB || SLT ? Invert]
-        [SUB || SLT]
+        [A_i] --> [AND || OR ? Invert]
+        [B_i] --> [AND || OR || SUB || SLT ? Invert]
 }
 
 package "Combining Stage" {
         [AND || OR ? Invert] --> [ADD]
         [AND || OR || SUB || SLT ? Invert] --> [ADD]
-        [SUB || SLT] --> [ADD]
+        [Carry_i] --> [ADD]
 
         [AND || OR ? Invert] --> [NOR]
         [AND || OR || SUB || SLT ? Invert] --> [NOR]
@@ -24,10 +24,10 @@ package "Combining Stage" {
 }
 
 package "Selection Stage" {
-        [ADD] --> [Out_0, Carry_0]
-        [NOR] --> [Out_0, Carry_0]
-        [NAND] --> [Out_0, Carry_0]
-        [XOR] --> [Out_0, Carry_1]
+        [ADD] --> [Out_i, Carry_i+1]
+        [NOR] --> [Out_i, Carry_i+1]
+        [NAND] --> [Out_i, Carry_i+1]
+        [XOR] --> [Out_i, Carry_i+1]
 }
 
 @enduml
