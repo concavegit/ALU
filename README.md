@@ -19,7 +19,6 @@ However, this checks the ALU's output to its zero flag.
 For a problem here to be detected, the ALU's other functions must be properly fixed.
 This is a feature as the designer will not try to fix a perfectly good zero flag prematurely.
 The zero flag also tests an edge case of SLT, as zero draws the line between less than or less than or equal to via subtraction.
-
 The overflow flag is also tested by generating cases where the sum is the maximum or minimum number before overflowing.
 
 The testing loop iterates over all 8 configurations for the addition test case generator, 1024 random instances of each test case spec, and all 8 functions.
