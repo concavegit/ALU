@@ -17,6 +17,14 @@ The last ALU is identical to the above, except the carry in and carry out are co
 The zero flag is also inverted so that 1 indicates zero and 0 indicates a nonzero output.
 A postprocessor is then ran on the outputs and the raw inputs to deduce SLT, as well as setting carry and overflow to zero when addition or subtraction is not used.
 
+Our original design handled zero with a postprocessor similar to SLT.
+However, we realized that zero could be calculated with the bit-wise ALU model.
+Since this fit our core bit-wise design model without adding to area or delay, we decided to have the bit-wise ALU units to handle zero.
+
+Implementing SLT in a bit-wise model by implementing a bit-wise greater-than-or-equal-to may have been possible.
+However, if the signs of the inputs are different that cascade can be bypassed with a simple XOR on the MSB of the inputs.
+Therefore, we kept SLT as a separate unit.
+
 # Test Bench
 
 The main principle of the test bench is to thoroughly check addition.
