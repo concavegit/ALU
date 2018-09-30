@@ -183,35 +183,65 @@ int main(int argc, char** argv)
   Verilated::commandArgs(argc, argv);
 
   Valu dut;
+  std::random_device rd;
+  std::mt19937 rng(rd());
 
-  std::vector<int> failed_cases;
-
-  const std::vector<void (*) (Valu &)> commands =
+  const std::vector<void (*) (Valu &)> test_commands =
     {
      checkSum, checkDiff, checkXor, checkSLT,
      checkAnd, checkNand, checkNor, checkOr
     };
 
+  // Iterate through all test case specs
   for (auto i = 0; i < 8; i++)
     {
+
+      // Randomly select 1024 test cases for each test case spec
       for (auto j = 0; j < 1024; j++)
         {
-          const auto tc = genTestCase(i & 1, bool (i & 2), bool (i & 4));
-          const auto b = std::get<1>(tc);
-          dut.operandA = std::get<0>(tc);
+          const auto test_case = genTestCase(i & 1, bool (i & 2), bool (i & 4));
+          const auto b = std::get<1>(test_case);
+
+          // Check each test case for each function
           for (auto k = 0; k < 8; k++)
             {
+              dut.operandA = std::get<0>(test_case);
+
               // Because the test cases are created for addition, negate
               // the second input so that the same coverage for addition
               // is applied to subtraction.
               dut.operandB = k == 1 ? -b : b;
               dut.command = k;
               dut.eval();
+              test_commands[k](dut);
 
-              commands[k](dut);
+              // Verify zero-flag on.
+              dut.operandA = rand() % 2 ? rand() : -rand();
+              dut.operandB = k == 1 ? dut.operandA : -dut.operandA;
+              dut.eval();
+              test_commands[k](dut);
+
+              // Test overflow at the minimum and maximum values
+              dut.operandA = rand() % 2 ? rand() : -(rand() + 1);
+              const int overflow_b = (dut.operandA < 0 ? std::numeric_limits<int>::min() : std::numeric_limits<int>::max()) - dut.operandA;
+              dut.operandB = k == 1 ? -overflow_b : overflow_b;
+              test_commands[k](dut);
             }
         }
     }
-  
+
+  // Test all combinations of edge values
+  int edge_vals[] = {0, -1, std::numeric_limits<int>::min(), std::numeric_limits<int>::max()};
+
+  for (const auto& val0 : edge_vals)
+    for (const auto& val1 : edge_vals)
+      for (const auto& test_command : test_commands)
+        {
+          dut.operandA = val0;
+          dut.operandB = val1;
+          dut.eval();
+          test_command(dut);
+        }
+
   dut.final();
 }
