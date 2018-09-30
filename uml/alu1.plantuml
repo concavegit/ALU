@@ -2,6 +2,7 @@
 [A_i]
 [B_i]
 [Carry_i]
+[Zero_i-1]
 
 package "Inverting Stage" {
         [A_i] --> [AND || OR ? Invert]
@@ -24,10 +25,16 @@ package "Combining Stage" {
 }
 
 package "Selection Stage" {
-        [ADD] --> [Out_i, Carry_i+1]
-        [NOR] --> [Out_i, Carry_i+1]
-        [NAND] --> [Out_i, Carry_i+1]
-        [XOR] --> [Out_i, Carry_i+1]
+        [ADD] --> [Out_i]
+        [ADD] --> [Carry_i+1]
+        [NOR] --> [Out_i]
+        [NOR] --> [Carry_i+1]
+        [NAND] --> [Out_i]
+        [NAND] --> [Carry_i+1]
+        [XOR] --> [Out_i]
+        [XOR] --> [Carry_i+1]
+        [OUT_i] --> [Zero_i]
+        [Zero_i-1] --> [Zero_i]
 }
 
 @enduml

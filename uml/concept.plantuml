@@ -24,10 +24,14 @@ package "Combining Stage" {
 }
 
 package "Selection Stage" {
-        [ADD] --> [Out_0, Carry_0]
-        [NOR] --> [Out_0, Carry_0]
-        [NAND] --> [Out_0, Carry_0]
-        [XOR] --> [Out_0, Carry_1]
+        [ADD] --> [Out_0]
+        [ADD] --> [Carry_0]
+        [NOR] --> [Out_0]
+        [NOR] --> [Carry_0]
+        [NAND] --> [Out_0]
+        [NAND] --> [Carry_0]
+        [XOR] --> [Out_0]
+        [XOR] --> [Carry_0]
 }
 
 @enduml
