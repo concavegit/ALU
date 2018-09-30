@@ -9,7 +9,6 @@
 
 `include "fulladder.v"
 `include "multiplexer.v"
-`include "decoder.v"
 `define OR or #30
 `define NAND nand #10
 `define XOR xor #60
