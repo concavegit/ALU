@@ -18,7 +18,7 @@ module alu
   (
    output out,carry,
    input  s0,s1,
-   input  abc
+   input  a, b, c
    );
 
    // Intermediate   bits.
