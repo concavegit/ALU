@@ -3,9 +3,9 @@
  * 
  * Inputs: a[32], b[32]
  * Outputs: out[32], carry, overflow
- * Function: sum = Least 4 significant bits of a + b + c
+ * Function: sum = Least 32 significant bits of a + b + c
  * carry = MSB of a + b + c
- * overflow = the sum is more than 4 bits.
+ * overflow = the sum is more than 32 bits.
  * Comment Integer 2's complement addition.
  */
 
