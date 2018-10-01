@@ -14,11 +14,11 @@
 `define XOR xor #60
 `define NOT not #10
 
-module alu
+module alu1
   (
-   output out,carry,
-   input  z0,s0,s1,
-   input  a, b, c,z1
+   output out,carry,z1,
+   input  s0,s1,
+   input  a, b,c
    );
 
    // Intermediate   bits.
@@ -35,6 +35,5 @@ module alu
    `NOT(noand1,noand0);
    multiplexer
      m0(out,s0,s1,naor1,x01,noand1,add1);
-   `AND(z1,z0,out)
-
+     m0(z1,s0,s1,naor1,x01,noand1,add1);
 endmodule
