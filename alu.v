@@ -8,7 +8,7 @@
  */
 
 `include "fulladder.v"
-`include "multiplexer.v"
+`include "multiplexer8.v"
 `define OR or #30
 `define NAND nand #10
 `define XOR xor #60
@@ -16,25 +16,30 @@
 
 module alu
   (
-   output out,carry,
-   input  z0,s0,s1,
-   input  a, b, c,z1
+   
+   input  s0,s1,s2,
+   input  a, b, c, z0,
+   output out,carry,z1
    );
 
    // Intermediate   bits.
-   wire   inva, invb,noand0,add1,naor1,xo1,noand1 ;
-
-   `XOR(inva,a,s0);
+   wire    invb,and0,or0,nand0,nor0,add1,naor1,xo1,noand1,ns0,ns1 ;
+   `NOT(ns0,s0);
+   `NOT(ns1,s1);
+   `AND(invb,ns0,ns1);
+   
    `XOR(invb,b,s1);
 
    fulladder
-     f0(add1,carry,inva,invb,c);
-   `NAND(naor1,inva,invb);
-   `XOR(xo1,inva,invb);
-   `OR(noand0,inva,invb);
-   `NOT(noand1,noand0);
-   multiplexer
-     m0(out,s0,s1,naor1,x01,noand1,add1);
-   `AND(z1,z0,out)
+     f0(add1,carry,a,invb,c);
+   `AND(and0,a,b);
+   `NOT(nand0,and0);
+   `XOR(xo1,a,b);
+   `OR(or0,a,b);
+   `NOT(nor0,or0);
+
+   multiplexer8
+     m0(out,s0,s1,s2,add1,add1,xo1,xo1,and0,nand0,nor0,or0);
+   `OR(z1,z0,out);
 
 endmodule
