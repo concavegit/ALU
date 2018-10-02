@@ -5,7 +5,7 @@
 `define XOR xor #50
 `define NAND nand #50
 
-module multiplexer8
+module multiplexer82
   (  	
         output out,
         input  a0, a1,a2,

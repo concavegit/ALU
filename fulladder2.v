@@ -7,17 +7,18 @@
  * carry = MSB of a + b + c
  */
 
-`include "halfadder.v"
+`include "halfadder2.v"
 `define OR or #50
 
-module fulladder(output sum, carry,
-input a, b, c                 );
+module fulladder2(output sum, carry, 
+input a, b, c
+                 );
 
    // Intermediate sum and carry bits.
    wire                 sum0, carry0, carry1;
 
    // Chain halfadders together to find the LSB of the sum.
-   halfadder
+   halfadder2
      h0(a, b, sum0, carry0),
      h1(sum0, c, sum, carry1);
 

@@ -7,8 +7,8 @@
  * carry = MSB of a + b + c
  */
 
-`include "fulladder.v"
-`include "multiplexer8.v"
+`include "fulladder1.v"
+`include "multiplexer81.v"
 `define OR or #30
 `define NAND nand #10
 `define XOR xor #60
@@ -16,10 +16,10 @@
 
 module alu
   (
+   output out,carry,z1,
+   input  z0,s0,s1,s2,
+   input  a, b,c
    
-   input  s0,s1,s2,
-   input  a, b, c, z0,
-   output out,carry,z1
    );
 
    // Intermediate   bits.
@@ -30,7 +30,7 @@ module alu
    
    `XOR(invb,b,s1);
 
-   fulladder
+   fulladder1
      f0(add1,carry,a,invb,c);
    `AND(and0,a,b);
    `NOT(nand0,and0);
@@ -38,8 +38,8 @@ module alu
    `OR(or0,a,b);
    `NOT(nor0,or0);
 
-   multiplexer8
-     m0(out,s0,s1,s2,add1,add1,add1,xo1,and0,nand0,nor0,or0);
+   multiplexer81
+     m0(out,s0,s1,s2,add1,add1,xo1,xo1,and0,nand0,nor0,or0);
    `OR(z1,z0,out);
 
 endmodule
