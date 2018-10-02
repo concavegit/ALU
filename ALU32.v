@@ -22,7 +22,7 @@ module alu32 (output [31:0] out,
 
    // Intermediate carry bits
    wire [30:0] carryout;
-   wire [30:0] zero;
+   wire [30:0] z;
 
 
    
