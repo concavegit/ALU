@@ -10,8 +10,9 @@
 `include "halfadder2.v"
 `define OR or #50
 
-module fulladder2(input a, b, c,
-                 output sum, carry);
+module fulladder2(output sum, carry, 
+input a, b, c
+                 );
 
    // Intermediate sum and carry bits.
    wire                 sum0, carry0, carry1;
