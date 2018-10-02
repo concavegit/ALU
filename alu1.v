@@ -18,7 +18,7 @@ module alu1
   (
    output out,carry,z1,
    input  s0,s1,s2,
-   input  a, b,c
+   input  a, b
    );
 
    // Intermediate   bits.
@@ -30,7 +30,7 @@ module alu1
    `XOR(invb,b,s1);
 
    fulladder
-     f0(add1,carry,a,invb,c);
+     f0(add1,carry,a,invb,invb);
    `AND(and0,a,b);
    `NOT(nand0,and0);
    `XOR(xo1,a,b);
