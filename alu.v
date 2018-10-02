@@ -39,7 +39,7 @@ module alu
    `NOT(nor0,or0);
 
    multiplexer8
-     m0(out,s0,s1,s2,add1,add1,xo1,xo1,and0,nand0,nor0,or0);
+     m0(out,s0,s1,s2,add1,add1,add1,xo1,and0,nand0,nor0,or0);
    `OR(z1,z0,out);
 
 endmodule
