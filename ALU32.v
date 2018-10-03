@@ -64,7 +64,7 @@ module alu32 (output [31:0] out,
      a29(out[29], carryout[29],z[29],z[28],add[0],add[1],add[2],a[29],b[29],carryout[28]),
      a30(out[30], carryout[30],z[30],z[29],add[0],add[1],add[2],a[30],b[30],carryout[29]);
      alu31
-     a31(out[31],cout,overflow,z[30],zout,add[0],add[1],add[2],a[31],b[31],carryout[30]);
+     a31(out[31],cout,overflow,zout,z[30],add[0],add[1],add[2],a[31],b[31],carryout[30]);
 
  
 endmodule
