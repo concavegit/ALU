@@ -96,6 +96,7 @@ module alu
    and (carryout, ic31, addsub);//Figuring out overflow and zero
    and (overflow, ioverflow, addsub);
 
+	 /*
    // slt
    wire          slt;
    and (slt, subslt, command[1]);
@@ -106,8 +107,20 @@ module alu
 
    xor (sltsel, operandA[31], operandB[31]);
    mux m0(sltres[0], iresult[31], operandA[31], sltsel);
+	 */
 
-   mux321 m1(result, iresult, sltres, slt);
+	 wire do_slt; // Are we doing SLT?
+	 and (do_slt, subslt, command[1]); 
+
+	 wire a_b_signs_diff, slt_out;
+	 xor (a_b_signs_diff, operandA[31], operandB[31]);
+	 mux slt_mux(slt_out, iresult[31], operandA[31], a_b_signs_diff);
+
+	 wire [31:0] slt_out_32;
+	 assign slt_out_32[31:1] = 32'b0;
+	 assign slt_out_32[0] = slt_out;
+
+   mux321 m1(result, iresult, slt_out_32, do_slt);
 
    // zero
    nor
