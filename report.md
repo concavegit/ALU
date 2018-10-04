@@ -37,6 +37,8 @@ Some logic was also simplified.
 Since invert b does not affect and, or, nor, or nand, the condition for inverting be was simplified to be equal to the LSB of the command.
 
 # Test Bench
+- main test bench: testbench.cpp, ran with `make` and then `./obj_dir/Valu`
+- delay visualized: delay.sv, ran with `iverilog delay.sv`, `./a.out`, and `gtkwave test.vcd`
 
 The main principle of the test bench is to thoroughly check addition.
 Negating the second test case element gives the same coverage for subtraction.
