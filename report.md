@@ -49,7 +49,7 @@ The overflow flag is also tested by generating cases where the sum is the maximu
 
 The testing loop iterates over all 8 configurations for the addition test case generator, 1024 random instances of each test case spec, and all 8 functions.
 For all of the above cases, an overflow test and zero test are also tested, leading to 3 * 8 * 1024 * 8 test cases.
-The covered output cases are calculated below and demonstrate good coverage.
+The covered output cases are calculated below and demonstrate excellent coverage.
 
 | Flag     | Intentionally False | Intentionally True |
 |----------|---------------------|--------------------|
