@@ -15,7 +15,7 @@ This is because subtracting zero via inversion and an extra carry results in an 
 This is illustrated with a large or gate two images down., as this is logically equivalent with our timing model and less messy to draw.
 A single slice is pictured below.
 
-![](res/aluslice.png)
+![](res/slice.png)
 
 The overflow is detected by going by the signs of a and b if possible, and the sign of the subtraction otherwise.
 This eliminates the danger of overflow.
