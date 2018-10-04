@@ -1,3 +1,14 @@
+/*
+ * Module aluslice
+ *
+ * Inputs: command, a, b, cin, zin, invtb
+ * Outputs: result, cout, zout
+ * Function: result = a bit slice for all corresponding commands except
+ * SLT, which is replaced with addition.
+ * cout = the carry out of the fulladder
+ * zout = the result is zero
+ */
+
 `include "fulladder.sv"
 `include "mux8way.sv"
 

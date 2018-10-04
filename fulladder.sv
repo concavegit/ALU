@@ -1,6 +1,17 @@
+/*
+ * Module fulladder
+ *
+ * Inputs: a, b, c
+ * Outputs: sum, carry
+ * Function: sum = LSB of a + b + c
+ * carry = MSB of a + b + c
+ */
+
 `include "halfadder.sv"
-module fulladder(output sum, carry,
-input a, b, c                 );
+module fulladder(
+                 output sum, carry,
+                 input  a, b, c
+                 );
 
    // Intermediate sum and carry bits.
    wire                 sum0, carry0, carry1;

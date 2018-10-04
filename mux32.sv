@@ -1,3 +1,11 @@
+/*
+ * Module mux32
+ *
+ * Inputs: in0, in1, sel
+ * Outputs: out
+ * Function: if sel then in1 else in0.
+ */
+
 module mux32
   (
    output [31:0] out,

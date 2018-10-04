@@ -1,9 +1,20 @@
+/*
+ * Module alu
+ *
+ * Inputs: operandA, operandB, command
+ * Outputs: result, carryout, zero, overflow
+ * Function: result = the result of the corresponding command.
+ * carryout = the carry output of either addition or subtraction, 0
+ * otherwise.
+ * zero = 1 if the command is addition or subtraction and the result
+ * is 0, 0 otherwise.
+ */
+
 `include "aluslice.sv"
 `include "mux.sv"
 `include "mux32.sv"
 
-module alu
-
+module ALU
   (
    output [31:0] result,
    output        carryout,

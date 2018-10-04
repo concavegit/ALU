@@ -1,3 +1,12 @@
+/*
+ * Module mux8way
+ *
+ * Inputs: sel, in0, in1, in2, in3, in4, in5, in6, in7
+ * Outputs: out
+ * Function: if sel == 0 then in0, if sel == 1 then in1 ... if sel ==
+ * 7 then in7
+ */
+
 module mux8way
   (
    output      out,
