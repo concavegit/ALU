@@ -4,26 +4,32 @@ Our ALU passes 196640 carefully controlled test cases to verify adherence to the
 The structural description of the components are well-documented so replication and iteration is easy.
 
 # Design
-The block design implements only NOR, XOR, XOR, and ADD in bit slices, using a carry input as well as not gates to get the other 4 functions with little area or timing cost.
-The least significant ALU bit slice sets the adder's carry bit to whether or not a subtraction operation must happen.
+The block design implements all of the commands except for SLT bit slices, using a carry input and an invert b input to carryout subtraction.
+There is also a zero input and zero output.
+The zero output simply ors the zero input with the result bit, resulting in a boolean reflecting if the sum so far is not zero.
+
+The glue logic decides if operandB should be inverted.
+Since this is only necessary for a subtraction or SLT operation, the initial carry in is the same as the invert b input.
+Notably, invert b is 0 when b is zero and we are subtracting.
+This is because subtracting zero via inversion and an extra carry results in an extraneous overall carry bit.
+
+The overflow is detected by going by the signs of a and b if possible, and the sign of the subtraction otherwise.
+This eliminates the danger of overflow.
+At the end, the flags are anded with a boolean reflecting whether or not the command corresponds to addition or subtraction.
 
 ![](uml/concept.png)
 
-The middle ALU slices then take the raw carry from the previous ALU, as well as applying and between the last zero output and the current result to output a new OR, to be inverted after the last bit.
+Our original design handled zero with a postprocessor similar to SLT, and only implemented nand, nor, and add using a 4-way mux in each bit slice.
+Xor was implemented by disabling the carry in and using addition, and and and or were implemented using invert a and invert b inputs.
+However, since the carry bit is what stops the slices from operating completely in parallel, we expanded to an 8-way mux per slice and passing carry directly from the input, through the fulladder, and to the output.
+With room for and and or, there was no longer any  need to invert a.
 
-![](uml/alu1.png)
+We also initially missed the special case from subtracting zero.
+Luckily, the test bench caught this and brought it to our attention.
+We added a boolean reflecting if b was not zero and anded it with the existing condition for inverting b before passing the value to the alu slices.
 
-The last ALU is identical to the above, except the carry in and carry out are compared to create an additional overflow output.
-The zero flag is also inverted so that 1 indicates zero and 0 indicates a nonzero output.
-A postprocessor is then ran on the outputs and the raw inputs to deduce SLT, as well as setting carry and overflow to zero when addition or subtraction is not used.
-
-Our original design handled zero with a postprocessor similar to SLT.
-However, we realized that zero could be calculated with the bit-wise ALU model.
-Since this fit our core bit-wise design model without adding to area or delay, we decided to have the bit-wise ALU units to handle zero.
-
-Implementing SLT in a bit-wise model by implementing a bit-wise greater-than-or-equal-to may have been possible.
-However, if the signs of the inputs are different that cascade can be bypassed with a simple XOR on the MSB of the inputs.
-Therefore, we kept SLT as a separate unit.
+Some logic was also simplified.
+Since invert b does not affect and, or, nor, or nand, the condition for inverting be was simplified to be equal to the LSB of the command.
 
 # Test Bench
 
@@ -49,9 +55,14 @@ The covered output cases are calculated below and demonstrate good coverage.
 |----------|---------------------|--------------------|
 | Overflow | 192512              | 4096               |
 | Carry    | 188416              | 8192               |
-| Zero     | 44032               | 16384              |
+| Zero     | 163852              | 16388              |
 
 Along with this table, all combinations of 0, -1, and the upper and lower limits of the inputs are tested as well for all operations to test edge cases.
 XOR, NOR, NAND, AND, OR, and SLT get to shine especially here, as the controlled presence of 1s and 0s in the bits make for distinct outputs.
 For example, -1 XOR 0 is -1, everything AND 0 is 0, everything NOR 1 is zero, and everything NAND 0 is 1.
 If the second argument of SLT is the lower limit of a 32 bit signed int, SLT must output 0.
+
+# Conclusion
+
+Our ALU balances size and speed and is correct.
+Therefore, it is ready to be built into a CPU.
