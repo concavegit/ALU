@@ -8,6 +8,7 @@ A left branch is a 'yes', and a right brangh is a 'no'.
 ![](uml/concept2.png)
 
 ## Test Bench
+To run the test bench invoke `make` and then `./obj_dir/Valu`
 The main principle of the test bench is to thoroughly check addition.
 Inverting the second test case input gives the same coverage for subtraction.
 The addition test cases are created by specifying whether or not each input and sum is nonnegative.
