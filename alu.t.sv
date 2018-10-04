@@ -225,7 +225,11 @@ module alu_tb();
 			a <= testA[ii];
 			b <= testB[ii];
 			cmd <= testCmd[ii];
-			#100000;
+			#1000000; // Delay a very long time so it's clear what outputs correspond to what inputs
+			a <= 32'dx; // Set all to x, so we can tell how long the next would take at its slowest
+			b <= 32'dx;
+			cmd <= 32'dx;
+			#1000000;
 		end
 		$finish;
 	end

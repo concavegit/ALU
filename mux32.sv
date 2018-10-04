@@ -15,14 +15,14 @@ module mux32
    );
 
    wire          a;
-   wire [$bits(in0) - 1:0] aa, bb;
+   wire [31:0]   aa, bb;
 
    `NAND (a, sel, sel);
 
-   genvar                  i;
+   genvar        i;
 
    generate
-      for (i = 0; i < $bits(in0); i = i + 1) begin
+      for (i = 0; i < 32; i = i + 1) begin
          `NAND (aa[i], in0[i], a),
         (bb[i], in1[i], sel),
         (out[i], aa[i], bb[i]);
