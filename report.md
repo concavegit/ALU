@@ -69,7 +69,43 @@ XOR, NOR, NAND, AND, OR, and SLT get to shine especially here, as the controlled
 For example, -1 XOR 0 is -1, everything AND 0 is 0, everything NOR 1 is zero, and everything NAND 0 is 1.
 If the second argument of SLT is the lower limit of a 32 bit signed int, SLT must output 0.
 
+# Timing
+
+Because SLT is addition/subtraction with logic at the end, it is the slowest operation.
+Since all the intermediate carry bits are processed with or gates, a case with no carrying will avoid short circuiting behavior.
+Therefore, the slowest operation is SLT with a delay of 2210.
+
 ![](res/delay.png)
+
+The worst case addition follows the same principle, 0 plus -1 has a delay of 2080 nanoseconds, as shown below.
+
+![](res/add.png)
+
+Applying the same principle, subtraction has a worst case of 0 - 1 with delay 2170 nanoseconds.
+
+![](res/sub.png)
+
+The XOR is completely parallel and exhibits no short circuiting behavior.
+Therefore, all inputs will have the same delay of 190.
+
+![](res/xor.png)
+
+The AND is completely parallel and exhibits short circuiting behavior, so to be safe avoid this by using only 1s with -1 & -1.
+The worst case AND is 190 nanoseconds.
+
+![](res/and.png)
+
+The NAND gate is similar to AND, so testing with ~(-1 & -1), a delay of 10 less is expected and demonstrated at 180 nanosecons.
+
+![](res/nand.png)
+
+The NOR gate short circuits if any input is 1, so testing with ~(0 | 0), a delay of 180 nanoseconds is observed expectedly similar to NAND.
+
+![](res/nor.png)
+
+The OR gate is expected to and demonstrates the same propagation delay as AND: 190 nanoseconds.
+
+![](res/or.png)
 
 # Conclusion
 

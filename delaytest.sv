@@ -14,20 +14,57 @@ module delaytest();
    initial begin
       $dumpfile("test.vcd");
       $dumpvars();
+      // SLT
+      // operandA = 0;
+      // operandB = 1;
+      // command = 3;
+      // #100000
+
+      // ADD
+      // operandA = 0;
+      // operandB = -1;
+      // command = 0;
+      // #100000 operandA = 0;
+
+      // SUB
+      // operandA = 0;
+      // operandB = 1;
+      // command = 1;
+      // #100000;
+
+      // XOR
+      // operandA = 0;
+      // operandB = 0;
+      // command = 2;
+      // #100000
+
+      // AND
+      // operandA = 1;
+      // operandB = 1;
+      // command = 4;
+      // #100000
+
+      // NAND
+      // operandA = 1;
+      // operandB = 1;
+      // command = 5;
+      // #100000
+
+      // NOR
+      // operandA = 0;
+      // operandB = 0;
+      // command = 6;
+      // #100000
+
+      // OR
       operandA = 0;
-      operandB = 1;
-      command = 3;
-      // A few more (non-exhaustive) cases we tried.
-      #100000 operandA = 0;
-      operandB = -1;
-      command = 5;
-      #100000 operandA = 0;
       operandB = 0;
-      command = 0;
-      #100000;
-      operandA = 223423;
-      operandB = 3232211;
-      command = 1;
-      #100000$finish;
-   end
+      command = 7;
+      #100000
+      // operandA = 0;
+      // operandB = 0;
+        // command = 3'b010;
+        // #100
+        $finish;
+          end
 endmodule
