@@ -14,8 +14,6 @@
 `include "mux.sv"
 `include "mux32.sv"
 
-`define NOT not #10
-
 module ALU
   (
    output [31:0] result,

@@ -62,6 +62,8 @@ XOR, NOR, NAND, AND, OR, and SLT get to shine especially here, as the controlled
 For example, -1 XOR 0 is -1, everything AND 0 is 0, everything NOR 1 is zero, and everything NAND 0 is 1.
 If the second argument of SLT is the lower limit of a 32 bit signed int, SLT must output 0.
 
+![](res/delay.png)
+
 # Conclusion
 
 Our ALU balances size and speed and is correct.

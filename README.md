@@ -37,3 +37,17 @@ Along with this table, all combinations of 0, -1, and the upper and lower limits
 XOR, NOR, NAND, AND, OR, and SLT get to shine especially here, as the controlled presence of 1s and 0s in the bits make for distinct outputs.
 
 ## Timing Analysis
+
+The timing model used was a 10 nanosecond delay per input of not, nand, and nor.
+All other basic gates add an additional 10 nanoseconds for the inversion step.
+
+Because only addition, subtraction, or SLT require a sequential processing of carry bits to reach the desired outputs, the slowest operation is one of those three.
+As long as both operands have the same sign, the logic implemented makes SLT a subtraction operation with extra logic at the end, and addition is the same as subtraction.
+Therefore, SLT is the slowest operation, given both operands have the same sign.
+Also, the carry bits are processed using only or gates, the moment a carry input is a 1 the or gates can become 1 without waiting for other inputs.
+By avoiding this shortcut, the slowest operation is SLT between 0 and 1, as there is no carry.
+The results obtained was a slowest propagation delay of 2210 nanoseconds.
+We verified this result using a combination of random numbers, 0s, 1s, and the upper and lower boundaries on various commands.
+2210 nanoseconds is significantly slower than, say, a bitwise function that takes under 200 nanoseconds.
+
+The image of this delay is below.

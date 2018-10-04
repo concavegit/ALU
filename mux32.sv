@@ -6,6 +6,7 @@
  * Function: if sel then in1 else in0.
  */
 `define NAND nand #20
+`define NOT not #10
 
 module mux32
   (
@@ -17,7 +18,7 @@ module mux32
    wire          a;
    wire [31:0]   aa, bb;
 
-   `NAND (a, sel, sel);
+   `NOT (a, sel);
 
    genvar        i;
 
