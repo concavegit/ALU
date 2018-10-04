@@ -38,6 +38,7 @@ module alu
    wire          invtb;
    and (invtb, nbz, subslt);
 
+   // Chain together ALUs
    wire [31:0]   iresult;
    wire          ic0, ic1, ic2, ic3,
                  ic4, ic5, ic6, ic7,
@@ -57,7 +58,6 @@ module alu
                  iz24, iz25, iz26, iz27,
                  iz28, iz29, iz30, iz31;
 
-   // Chain together ALUs
    aluslice
      a0(iresult[0], ic0, iz0, command, operandA[0], operandB[0], invtb, 1'b0, invtb),
      a1a(iresult[1], ic1, iz1, command, operandA[1], operandB[1], ic0, iz0, invtb),
@@ -118,6 +118,6 @@ module alu
    xor (sltsel, operandA[31], operandB[31]);
    mux m0(sltres[0], iresult[31], operandA[31], sltsel);
 
-   // mux m1(result, result, sltres);
+   // Select either the SLT result or alu slice result
    mux32 m1(result, iresult, sltres, slt);
 endmodule

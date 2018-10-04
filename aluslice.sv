@@ -41,5 +41,5 @@ module aluslice
    mux8way m1(result, command, sum, sum, xorab, sum, andab, nandab, norab, orab);
 
    // Set Zero
-   or (zout, zin, sum);
+   or (zout, zin, result);
 endmodule
