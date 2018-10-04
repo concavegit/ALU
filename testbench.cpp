@@ -1,3 +1,12 @@
+/*
+ * Testbench
+ * This rigorously tests the alu unit.
+ * Because of some quirks with passing a pointer to functions in
+ * succession, many of the functions pass const values representing
+ * the alu object's values, rather than simply taking only the alu as
+ * an argument.
+ */
+
 #include <verilated.h>
 #include <limits>
 #include <random>
@@ -11,7 +20,10 @@
  * This is used in the other checkers.
  *
  * @param dut the device under testing.
- * @param desc the symbol for the operation that was carried out.
+ * @param a the dut's operandA.
+ * @param b the dut's operandB.
+ * @param command the dut's command.
+ * @param desc the symbol representing the command.
  */
 void checkZero(Valu* dut, const int a, const int b, const int command, std::string desc)
 {
@@ -30,7 +42,10 @@ void checkZero(Valu* dut, const int a, const int b, const int command, std::stri
  * This is used in the non-addition or subtraction checkers.
  *
  * @param dut the device under testing
- * @param desc the symbol for the operation carried out
+ * @param a the dut's operandA.
+ * @param b the dut's operandB.
+ * @param command the dut's command.
+ * @param desc the symbol representing the command.
  */
 void flagsZero(Valu* dut, const int a, const int b, const int command, std::string desc)
 {
@@ -72,8 +87,12 @@ bool checkCarry(const int a, const int b)
  * This is used in non-addition or subtraction checkers.
  *
  * @param dut the device under testing
+ * @param a the dut's operandA.
+ * @param b the dut's operandB.
+ * @param command the dut's command.
  * @param func the name of the operation carried out
  * @param desc the symbol for the operation carried out
+ * @param result the dut's result.
  */
 void checkBitwise(Valu* dut, const int a, const int b, const int command, const std::string func, const std::string desc, const int result)
 {
@@ -92,6 +111,8 @@ void checkBitwise(Valu* dut, const int a, const int b, const int command, const 
  * Warn if the outputs of the dut are incorrect for a sum.
  *
  * @param dut the device under testing
+ * @param a the dut's operandA.
+ * @param b the dut's operandB.
  */
 void checkSum(Valu* dut, const int a, const int b)
 {
@@ -125,6 +146,8 @@ void checkSum(Valu* dut, const int a, const int b)
  * Warn if the outputs of the dut are incorrect for subtraction.
  *
  * @param dut the device under testing
+ * @param a the dut's operandA.
+ * @param b the dut's operandB.
  */
 void checkDiff(Valu* dut, int a, int b)
 {
