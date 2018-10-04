@@ -1,3 +1,5 @@
+//2 way single bit mux 
+
 module mux
   (
    output out,

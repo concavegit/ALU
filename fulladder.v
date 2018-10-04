@@ -1,5 +1,5 @@
 
-
+//Full adder module which takes in a,b and carry in and computes sum and carry out
 
 module fulladder(output sum, carry,
 input a, b, c                 );

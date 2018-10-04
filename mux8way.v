@@ -1,3 +1,5 @@
+// this is an 8 way 1 bit multiplexers with 3 bits for selection
+
 module mux8way
   (
    output      out,

@@ -1,3 +1,8 @@
+//aluslice module, it is a mini-alu that takes in 2 1 bit operands,carryin and a 3 bit command along with inversion bits for a&b and then operates 8 different functions. Outputs result and carry out
+//a and b are the inputs
+//sel is the 3bit command
+// Its as special case because it calcuates the overflow.
+
 module aluslice
   (
    output      result, cout,
