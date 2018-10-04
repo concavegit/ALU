@@ -46,7 +46,9 @@ void flagsZero(Valu* dut, const int a, const int b, const int command, std::stri
     printf("overflow is %d for %d %s %d, should be 0",
            dut->overflow, dut->operandA, desc.c_str(), dut->operandB);
 
-  checkZero(dut, a, b, command,desc);
+  if (dut->zero != 0)
+    printf("zero is %d for %d %s %d, should be 0",
+           dut->zero, dut->operandA, desc.c_str(), dut->operandB);
 }
 
 /**
@@ -136,7 +138,7 @@ void checkDiff(Valu* dut, int a, int b)
   const bool carry = checkCarry(operandA, -operandB);
   const bool zero = diff == 0;
   const bool overflow = operandA >= 0 && operandB < 0
-    ? diff < 0 : operandA < 0 && operandB >= 0 ? diff >= 0 : 0;
+                                                    ? diff < 0 : operandA < 0 && operandB >= 0 ? diff >= 0 : 0;
 
   if (dut->result != diff)
     printf("Difference is %d for %d - %d, should be %d\n",
@@ -266,14 +268,4 @@ int main(int argc, char** argv)
         {
           test_command(dut, val0, val1);
         }
-
-  dut->operandA = 0;
-  dut->operandB = 0;
-// Or is -1 for -1437699349 | -709784299, should be -143163985
-
-  dut->command = 1;
-  dut->eval();
-  printf("%d\n", dut->result);
-  // checkSum(dut);
 }
-// zero is 1 for 5297410 ^ -3536887, should be 0, 4, 4194304, 1
