@@ -1,3 +1,4 @@
+`include "halfadder.sv"
 module fulladder(output sum, carry,
 input a, b, c                 );
 

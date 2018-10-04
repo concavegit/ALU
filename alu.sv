@@ -1,4 +1,9 @@
+`include "aluslice.sv"
+`include "mux.sv"
+`include "mux32.sv"
+
 module alu
+
   (
    output [31:0] result,
    output        carryout,
@@ -107,7 +112,8 @@ module alu
    and (slt, subslt, command[1]);
 
    wire          sltsel;
-   reg [31:0]    sltres = 0;
+   wire [31:0]   sltres;
+   assign          sltres[31:1] = 0;
 
    xor (sltsel, operandA[31], operandB[31]);
    mux m0(sltres[0], iresult[31], operandA[31], sltsel);

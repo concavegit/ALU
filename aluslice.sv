@@ -1,3 +1,6 @@
+`include "fulladder.sv"
+`include "mux8way.sv"
+
 module aluslice
   (
    output      result, cout, zout,

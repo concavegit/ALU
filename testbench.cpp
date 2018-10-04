@@ -268,4 +268,5 @@ int main(int argc, char** argv)
         {
           test_command(dut, val0, val1);
         }
+  printf("If you see nothing above, then the ALU works! Otherwise, look at the test cases and fix them.\n");
 }
