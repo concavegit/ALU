@@ -25,11 +25,6 @@ module ALU
    input [2:0]   command
    );
 
-   // invert b?
-   wire          ncommand2, subslt;
-   not (ncommand2, command[2]);
-   and (subslt, ncommand2, command[0]);
-
    // Is b not 0?
    wire          nbz;
    or
@@ -45,9 +40,10 @@ module ALU
       operandB[28], operandB[29], operandB[30], operandB[31]
       );
 
-   // Set invtb if subtraction/slt and not zero
+   // Set invtb if not addition (non-subtraction/slt does not matter)
+   // and not zero
    wire          invtb;
-   and (invtb, nbz, subslt);
+   and (invtb, nbz, command[0]);
 
    // Chain together ALUs
    wire [31:0]   iresult;
@@ -118,10 +114,13 @@ module ALU
    and (overflow, ioverflow, addsub);
    and (zero, iz, addsub);
 
-   // slt
+   // slt ?
    wire          slt;
-   and (slt, subslt, command[1]);
+   wire          ncommand2;
+   not (ncommand2, command[2]);
+   and (slt, ncommand2, command[1], command[0]);
 
+   // slt result
    wire          sltsel;
    wire [31:0]   sltres;
    assign          sltres[31:1] = 0;
