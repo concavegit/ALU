@@ -8,6 +8,9 @@
  */
 
 `include "halfadder.sv"
+
+`define OR or #30
+
 module fulladder(
                  output sum, carry,
                  input  a, b, c
@@ -22,5 +25,5 @@ module fulladder(
      h1(sum0, c, sum, carry1);
 
    // The carry bit is 1 if any of the last additions carried.
-   or (carry, carry0, carry1);
+   `OR (carry, carry0, carry1);
 endmodule

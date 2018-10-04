@@ -5,6 +5,7 @@
  * Outputs: out
  * Function: if sel then in1 else in0.
  */
+`define NAND nand #20
 
 module mux32
   (
@@ -16,13 +17,13 @@ module mux32
    wire          a;
    wire [$bits(in0) - 1:0] aa, bb;
 
-   nand (a, sel, sel);
+   `NAND (a, sel, sel);
 
    genvar                  i;
 
    generate
       for (i = 0; i < $bits(in0); i = i + 1) begin
-         nand (aa[i], in0[i], a),
+         `NAND (aa[i], in0[i], a),
         (bb[i], in1[i], sel),
         (out[i], aa[i], bb[i]);
       end

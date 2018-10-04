@@ -6,14 +6,15 @@
  * Function: sum = LSB of a + b
  * carry = MSB of a + b
  */
+`define XOR xor #30
+`define AND and #30
 
 module halfadder (input a, b,
                   output sum, carry);
 
    // The MSB is 1 iff both bits are different
-   xor (sum, a, b);
+   `XOR (sum, a, b);
 
    // The LSB is 1 iff both bits are 0
-   and (carry, a, b);
-
+   `AND (carry, a, b);
 endmodule

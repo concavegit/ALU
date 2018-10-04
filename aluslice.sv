@@ -12,6 +12,9 @@
 `include "fulladder.sv"
 `include "mux8way.sv"
 
+`define NAND nand #20
+`define NOR nor #20
+
 module aluslice
   (
    output      result, cout, zout,
@@ -22,7 +25,7 @@ module aluslice
    wire        b1;
 
    // Invert b if necessary
-   xor(b1, invtb, b);
+   `XOR (b1, invtb, b);
 
    // Add
    wire        sum;
@@ -30,27 +33,27 @@ module aluslice
 
    // Xor
    wire        xorab;
-   xor (xorab, a, b);
+   `XOR (xorab, a, b);
 
    // And
    wire        andab;
-   and (andab, a, b);
+   `AND (andab, a, b);
 
    // Nand
    wire        nandab;
-   nand (nandab, a, b);
+   `NAND (nandab, a, b);
 
    // Nor
    wire        norab;
-   nor (norab, a, b);
+   `NOR (norab, a, b);
 
    // Or
    wire        orab;
-   or (orab, a, b);
+   `OR (orab, a, b);
 
    // Final result
    mux8way m1(result, command, sum, sum, xorab, sum, andab, nandab, norab, orab);
 
    // Set Zero
-   or (zout, zin, sum);
+   `OR (zout, zin, sum);
 endmodule

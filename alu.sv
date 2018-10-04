@@ -14,6 +14,8 @@
 `include "mux.sv"
 `include "mux32.sv"
 
+`define NOT not #10
+
 module ALU
   (
    output [31:0] result,
@@ -27,7 +29,7 @@ module ALU
 
    // Is b not 0?
    wire          nbz;
-   or
+   `OR
      (
       nbz,
       operandB[0], operandB[1], operandB[2], operandB[3],
@@ -43,7 +45,7 @@ module ALU
    // Set invtb if not addition (non-subtraction/slt does not matter)
    // and not zero
    wire          invtb;
-   and (invtb, nbz, command[0]);
+   `AND (invtb, nbz, command[0]);
 
    // Chain together ALUs
    wire [31:0]   iresult;
@@ -101,31 +103,31 @@ module ALU
 
    // Detect Overflow
    wire          ioverflow;
-   xor (ioverflow, ic31, ic30);
+   `XOR (ioverflow, ic31, ic30);
 
    // Detect Zero
    wire          iz;
-   not (iz, iz31);
+   `NOT (iz, iz31);
 
    // Zero flags if necessary
    wire          addsub;
-   nor (addsub, command[2], command[1]);
-   and (carryout, ic31, addsub);
-   and (overflow, ioverflow, addsub);
-   and (zero, iz, addsub);
+   `NOR (addsub, command[2], command[1]);
+   `AND (carryout, ic31, addsub);
+   `AND (overflow, ioverflow, addsub);
+   `AND (zero, iz, addsub);
 
    // slt ?
    wire          slt;
    wire          ncommand2;
-   not (ncommand2, command[2]);
-   and (slt, ncommand2, command[1], command[0]);
+   `NOT (ncommand2, command[2]);
+   `AND (slt, ncommand2, command[1], command[0]);
 
    // slt result
    wire          sltsel;
    wire [31:0]   sltres;
    assign          sltres[31:1] = 0;
 
-   xor (sltsel, operandA[31], operandB[31]);
+   `XOR (sltsel, operandA[31], operandB[31]);
    mux m0(sltres[0], iresult[31], operandA[31], sltsel);
 
    // Select either the SLT result or alu slice result
