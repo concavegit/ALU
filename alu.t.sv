@@ -222,14 +222,16 @@ module alu_tb();
 		// End auto-generated
 		
 		for (ii = 0; ii < 200; ii = ii+1) begin
+			$display("Set...");
 			a <= testA[ii];
 			b <= testB[ii];
 			cmd <= testCmd[ii];
-			#1000000; // Delay a very long time so it's clear what outputs correspond to what inputs
+			#5000000; // Delay a very long time so it's clear what outputs correspond to what inputs
+			$display("Reset...");
 			a <= 32'dx; // Set all to x, so we can tell how long the next would take at its slowest
 			b <= 32'dx;
 			cmd <= 32'dx;
-			#1000000;
+			#5000000;
 		end
 		$finish;
 	end
