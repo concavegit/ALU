@@ -12,13 +12,17 @@ The glue logic decides if operandB should be inverted.
 Since this is only necessary for a subtraction or SLT operation, the initial carry in is the same as the invert b input.
 Notably, invert b is 0 when b is zero and we are subtracting.
 This is because subtracting zero via inversion and an extra carry results in an extraneous overall carry bit.
-In the diagram below, this is illustrated with a large or gate, as this is logically equivalent with our timing model and less messy to draw.
+This is illustrated with a large or gate two images down., as this is logically equivalent with our timing model and less messy to draw.
+A single slice is pictured below.
+
+![](res/aluslice.png)
 
 The overflow is detected by going by the signs of a and b if possible, and the sign of the subtraction otherwise.
 This eliminates the danger of overflow.
 At the end, the flags are anded with a boolean reflecting whether or not the command corresponds to addition or subtraction.
+The block diagram is pictured below
 
-![](uml/concept.png)
+![](res/alu.png)
 
 Our original design handled zero with a postprocessor similar to SLT, and only implemented nand, nor, and add using a 4-way mux in each bit slice.
 Xor was implemented by disabling the carry in and using addition, and and and or were implemented using invert a and invert b inputs.
