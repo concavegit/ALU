@@ -11,12 +11,21 @@ lines = list(map(str.rstrip, sys.stdin.readlines()))
 cleanLines = []
 # Get 1st line after set, and last before reset
 for i, line in enumerate(lines):
-  if line == "Set...":
-    cleanLines += line
-    cleanLines += lines[i+1]
-  if line == "Reset...":
-    if len(cleanLines) == 0 or (cleanLines[len(cleanLines)-1] != line): # No duplicates
-      cleanLines += lines[i-1]
+  if i == 0:
+    continue
+  if lines[i-1] == "Set..." or (i+1 < len(lines) and lines[i+1] == "Reset..."):
+    cleanLines += [line]
 
-print(lines)
-#print(cleanLines)
+pairs = []
+i = 0
+while i < len(lines):
+  if lines[i] == "Set...":
+    i += 1
+    first = lines[i]
+  if lines[i] == "Reset...":
+    second = lines[i-1]
+    pairs += [(first, second)]
+  i += 1
+
+
+print(pairs)
