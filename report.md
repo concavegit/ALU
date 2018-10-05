@@ -27,7 +27,7 @@ With room for and and or, there was no longer any  need to invert a.
 
 We also initially missed the special case from subtracting zero.
 Luckily, the test bench caught this and brought it to our attention.
-We added a boolean reflecting if b was not zero and anded it with the existing condition for inverting b before passing the value to the alu slices.
+We added a boolean reflecting if b was not zero and anded it with the existing condition for inverting b before passing the value to the ALU slices.
 
 Some logic was also simplified.
 Since invert b does not affect and, or, nor, or nand, the condition for inverting be was simplified to be equal to the LSB of the command.
@@ -62,6 +62,8 @@ Along with this table, all combinations of 0, -1, and the upper and lower limits
 XOR, NOR, NAND, AND, OR, and SLT get to shine especially here, as the controlled presence of 1s and 0s in the bits make for distinct outputs.
 For example, -1 XOR 0 is -1, everything AND 0 is 0, everything NOR 1 is zero, and everything NAND 0 is 1.
 If the second argument of SLT is the lower limit of a 32 bit signed int, SLT must output 0.
+
+To analyze the timing behavior of the ALU, we built a separate test bench which tested 200 extreme cases, timing each one.  We found that the ALU's slowest processing time comes from the SLT operation on the operands 0 and 1.  This takes 2210 units of time, where each logic gate takes 10 units per input, plus 10 if it does not invert.
 
 ![](res/delay.png)
 
