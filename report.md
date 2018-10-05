@@ -12,6 +12,7 @@ The glue logic decides if operandB should be inverted.
 Since this is only necessary for a subtraction or SLT operation, the initial carry in is the same as the invert b input.
 Notably, invert b is 0 when b is zero and we are subtracting.
 This is because subtracting zero via inversion and an extra carry results in an extraneous overall carry bit.
+In the diagram below, this is illustrated with a large or gate, as this is logically equivalent with our timing model and less messy to draw.
 
 The overflow is detected by going by the signs of a and b if possible, and the sign of the subtraction otherwise.
 This eliminates the danger of overflow.
@@ -62,7 +63,16 @@ XOR, NOR, NAND, AND, OR, and SLT get to shine especially here, as the controlled
 For example, -1 XOR 0 is -1, everything AND 0 is 0, everything NOR 1 is zero, and everything NAND 0 is 1.
 If the second argument of SLT is the lower limit of a 32 bit signed int, SLT must output 0.
 
+![](res/delay.png)
+
 # Conclusion
 
 Our ALU balances size and speed and is correct.
 Therefore, it is ready to be built into a CPU.
+
+# Work Plan Reflection
+
+The lab took longer than expected.
+This is due to not taking the time to discuss the design of the ALU, the person writing the verilog had to rewrite it many times and the others were in the dark on the design and could not begin their tasks until the ALU was finished.
+We expected to get this done in 3 meetings with a few hours in between.
+This took 4 times with too many hours in between, with most of us having done nothing the first 2 meetings.
