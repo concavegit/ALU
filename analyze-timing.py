@@ -3,29 +3,31 @@
 
 import sys
 
-
-#lines = fileinput.input().splitlines()
+# Take input from stdin, separate into lines, and strip trailing newlines
 lines = list(map(str.rstrip, sys.stdin.readlines()))
 
-
-cleanLines = []
-# Get 1st line after set, and last before reset
-for i, line in enumerate(lines):
-  if i == 0:
-    continue
-  if lines[i-1] == "Set..." or (i+1 < len(lines) and lines[i+1] == "Reset..."):
-    cleanLines += [line]
-
+# Get first and last lines of each computation; assemble them into pairs
 pairs = []
 i = 0
 while i < len(lines):
-  if lines[i] == "Set...":
+  if lines[i] == "Set...": # Get the line after "Set..."
     i += 1
     first = lines[i]
-  if lines[i] == "Reset...":
-    second = lines[i-1]
+  if lines[i] == "Reset...": # And before "Reset...".  (These won't be the same, but the code should
+    second = lines[i-1]      # work even if they are.)
     pairs += [(first, second)]
   i += 1
 
+def getTime(s): # Get the timestamp of a line
+  t = s.split(",")[0][2:].strip()
+  return int(t)
 
-print(pairs)
+maxTime = 0 # Find the pair with the largest time spread
+maxPair = ()
+for pair in pairs:
+  dT = getTime(pair[1]) - getTime(pair[0])
+  if dT > maxTime:
+    maxTime = dT
+    maxPair = pair
+
+print(maxPair)
